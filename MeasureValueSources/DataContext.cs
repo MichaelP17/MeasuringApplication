@@ -5,7 +5,7 @@ namespace MeasuringApplication.MeasureValueSources
     public class DataContext : IMeasureValueSourceImport
     {
         /// <summary>
-        /// Load the MeasuringValues from a Database
+        /// Load the MeasuringValueSources from a Database
         /// </summary>
         /// <returns>A List of the MeasuringValues</returns>
         /// <exception cref="NotImplementedException"></exception>

@@ -1,4 +1,5 @@
 ﻿using MeasuringApplication.Interfaces;
+using MeasuringApplication.Models;
 
 namespace MeasuringApplication.Server
 {
@@ -34,7 +35,7 @@ namespace MeasuringApplication.Server
             Name = name;
         }
 
-        public GetPackageResults GetPackage(List<string> package)
+        public GetPackageResults GetPackage(Package package)
         {
             var randomResultCode = mRandom.Next(4);
             var result = (GetPackageResults)randomResultCode;

@@ -1,4 +1,5 @@
-﻿using MeasuringApplication.Server;
+﻿using MeasuringApplication.Models;
+using MeasuringApplication.Server;
 
 namespace MeasuringApplication.Interfaces
 {
@@ -6,6 +7,6 @@ namespace MeasuringApplication.Interfaces
     {
         string Name { get; set; }
 
-        GetPackageResults GetPackage(List<string> package);
+        GetPackageResults GetPackage(Package package);
     }
 }

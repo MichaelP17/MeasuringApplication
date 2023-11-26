@@ -9,7 +9,7 @@ namespace MeasuringApplication.MeasureValueSources
         private readonly string mImportDirectory = @"Import";
 
         /// <summary>
-        /// Load the MeasuringValues from a Excel List
+        /// Load the MeasuringValueSources from a Excel List
         /// </summary>
         /// <returns>A List of the MeasuringValues</returns>
         public List<string> GetMeasuringValueSources()

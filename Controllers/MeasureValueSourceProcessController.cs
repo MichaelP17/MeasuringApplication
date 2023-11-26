@@ -4,19 +4,34 @@ using MeasuringApplication.Models;
 namespace MeasuringApplication.Controllers
 {
     /// <summary>
-    /// Processes the MeasureValues
+    /// Processes the Sources for the MeasureValues
     /// </summary>
     public class MeasureValueSourceProcessController
     {
         private IMeasureValueSourceImport mContext;
 
+        public List<MeasureValueSourceFlatModel> MeasureValueSourceFlatModels { get; set; }
+
         public MeasureValueSourceProcessController(IMeasureValueSourceImport context)
         {
             mContext = context;
+            MeasureValueSourceFlatModels = new List<MeasureValueSourceFlatModel>();
         }
 
-        public void ProcessMeasureValueSources()
+        public List<IGrouping<string, MeasureValueSourceFlatModel>> ProcessMeasureValueSources()
         {
+            LoadMeasureValueSourceFlatModels();
+            var groupedFlatModels = MeasureValueSourceFlatModels.GroupBy(x => x.Station).ToList();
+            return groupedFlatModels;
+        }
+
+        public void LoadMeasureValueSourceFlatModels(bool forceInit = false)
+        {
+            if (!forceInit && MeasureValueSourceFlatModels.Count != 0)
+            {
+                return;
+            }
+
             var measureValueSources = mContext.GetMeasuringValueSources();
             if (measureValueSources == null)
             {
@@ -24,7 +39,7 @@ namespace MeasuringApplication.Controllers
                 return;
             }
 
-            // I actually hate this block
+            // I am not proud about this block but currently I had no idea how to do this better
             var flatModels = new List<MeasureValueSourceFlatModel>();
             foreach (var measureValueSource in measureValueSources)
             {
@@ -47,7 +62,22 @@ namespace MeasuringApplication.Controllers
                 flatModels.Add(flatModel);
             }
 
-            var groupedFlatModels = flatModels.GroupBy(x => x.Station).ToList();
+            MeasureValueSourceFlatModels = flatModels;
+        }
+
+        public List<Package> PreparePackages(List<IGrouping<string, MeasureValueSourceFlatModel>> groupedFlatModels)
+        {
+            var packages = new List<Package>();
+            foreach (var grouping in groupedFlatModels)
+            {
+                var chunkedGroup = grouping.Chunk(256).ToList();
+                chunkedGroup.ForEach(x => packages.Add(new Package()
+                {
+                    Station = grouping.Key,
+                    MeasureValueSources = x.ToList(),
+                }));
+            }
+            return packages;
         }
     }
 }
