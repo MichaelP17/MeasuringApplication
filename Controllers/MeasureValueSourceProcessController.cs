@@ -18,13 +18,21 @@ namespace MeasuringApplication.Controllers
             MeasureValueSourceFlatModels = new List<MeasureValueSourceFlatModel>();
         }
 
-        public List<IGrouping<string, MeasureValueSourceFlatModel>> ProcessMeasureValueSources()
+        /// <summary>
+        /// Group FlatModels by Station
+        /// </summary>
+        /// <returns></returns>
+        public List<IGrouping<string, MeasureValueSourceFlatModel>> GetGroupedMeasureValueSources()
         {
             LoadMeasureValueSourceFlatModels();
             var groupedFlatModels = MeasureValueSourceFlatModels.GroupBy(x => x.Station).ToList();
             return groupedFlatModels;
         }
 
+        /// <summary>
+        /// Get Measuring Value Sources and translate them into FlatModels
+        /// </summary>
+        /// <param name="forceInit"></param>
         public void LoadMeasureValueSourceFlatModels(bool forceInit = false)
         {
             if (!forceInit && MeasureValueSourceFlatModels.Count != 0)

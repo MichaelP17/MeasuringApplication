@@ -28,7 +28,7 @@ namespace MeasuringApplication.Timers
 
         public void ReloadValueSources()
         {
-            var measureValueSources = mSourceProcessController.ProcessMeasureValueSources();
+            var measureValueSources = mSourceProcessController.GetGroupedMeasureValueSources();
 
             // Prepare the packages so the do not exceed 256 values
             var packageSources = mSourceProcessController.PreparePackages(measureValueSources);
